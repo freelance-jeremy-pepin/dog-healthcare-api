@@ -22,6 +22,7 @@ class InitialTables extends Migration
                 $table->string('password', 255)->nullable(false);
                 $table->string('firstname', 255)->nullable(false);
                 $table->string('lastname', 255)->nullable(false);
+                $table->timestamps();
             }
         );
 
@@ -34,6 +35,7 @@ class InitialTables extends Migration
                 $table->string('breed', 255)->nullable(false);
                 $table->date('birthday')->nullable(false);
                 $table->multiLineString('comments')->nullable();
+                $table->timestamps();
             }
         );
 
@@ -50,6 +52,7 @@ class InitialTables extends Migration
                 $table->id();
                 $table->string('internal_label', 45)->nullable(false);
                 $table->string('display_label', 45)->nullable(false);
+                $table->timestamps();
             }
         );
 
@@ -67,6 +70,7 @@ class InitialTables extends Migration
                 $table->string('zip_code', 10)->nullable();
                 $table->string('email', 180)->nullable();
                 $table->multiLineString('notes')->nullable();
+                $table->timestamps();
             }
         );
 
@@ -77,6 +81,7 @@ class InitialTables extends Migration
                 $table->foreignId('dog_id');
                 $table->date('date')->nullable(false);
                 $table->decimal('weight', 4, 2)->nullable(false);
+                $table->timestamps();
             }
         );
 
@@ -90,6 +95,7 @@ class InitialTables extends Migration
                 $table->string('anti_parasitic_name', 255)->nullable(false);
                 $table->boolean('cared_by_owner')->nullable(false)->default(false);;
                 $table->multiLineString('notes')->nullable();
+                $table->timestamps();
             }
         );
 
@@ -103,6 +109,7 @@ class InitialTables extends Migration
                 $table->string('deworming_name', 255)->nullable(false);
                 $table->boolean('cared_by_owner')->nullable(false)->default(false);
                 $table->multiLineString('notes')->nullable();
+                $table->timestamps();
             }
         );
 
@@ -113,6 +120,7 @@ class InitialTables extends Migration
                 $table->string('internal_label', 45)->nullable(false);
                 $table->string('display_label', 45)->nullable(false);
                 $table->string('format', 10)->nullable(false);
+                $table->timestamps();
             }
         );
 
@@ -125,6 +133,7 @@ class InitialTables extends Migration
                 $table->integer('number_time_interval')->nullable(false);
                 $table->string('table_name', 255)->nullable(false);
                 $table->date('next_reminder')->nullable(false);
+                $table->timestamps();
             }
         );
     }
