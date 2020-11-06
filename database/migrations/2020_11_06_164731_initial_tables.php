@@ -34,7 +34,7 @@ class InitialTables extends Migration
                 $table->string('name', 100)->nullable(false);
                 $table->string('breed', 255)->nullable(false);
                 $table->date('birthday')->nullable(false);
-                $table->multiLineString('comments')->nullable();
+                $table->longText('comments')->nullable();
                 $table->timestamps();
             }
         );
@@ -69,7 +69,7 @@ class InitialTables extends Migration
                 $table->string('city', 45)->nullable();
                 $table->string('zip_code', 10)->nullable();
                 $table->string('email', 180)->nullable();
-                $table->multiLineString('notes')->nullable();
+                $table->longText('notes')->nullable();
                 $table->timestamps();
             }
         );
@@ -94,7 +94,7 @@ class InitialTables extends Migration
                 $table->date('date');
                 $table->string('anti_parasitic_name', 255)->nullable(false);
                 $table->boolean('cared_by_owner')->nullable(false)->default(false);;
-                $table->multiLineString('notes')->nullable();
+                $table->longText('notes')->nullable();
                 $table->timestamps();
             }
         );
@@ -108,7 +108,7 @@ class InitialTables extends Migration
                 $table->date('date');
                 $table->string('deworming_name', 255)->nullable(false);
                 $table->boolean('cared_by_owner')->nullable(false)->default(false);
-                $table->multiLineString('notes')->nullable();
+                $table->longText('notes')->nullable();
                 $table->timestamps();
             }
         );
