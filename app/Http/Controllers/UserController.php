@@ -2,59 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dog;
+use App\Exceptions\Handler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use  App\Models\User;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
-     * Instantiate a new UserController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Get the authenticated User.
      *
-     * @return Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function profile()
+    public function getMe(Request $request)
     {
-        return response()->json(['user' => Auth::user()], 200);
+        $user = User::relations($this->relations($request))->findOrFail(Auth::id());
+        return $this->respondOk($user);
     }
 
     /**
      * Get all User.
      *
-     * @return Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function allUsers()
+    public function getAll(Request $request)
     {
-        return response()->json(['users' => User::all()], 200);
+        return $this->respondOk(User::relations($this->relations($request))->all());
     }
 
     /**
      * Get one user.
      *
-     * @return Response
+     * @param $id integer Id de l'utilisateur
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function singleUser($id)
+    public function getById(int $id, Request $request)
     {
         try {
-            $user = User::findOrFail($id);
-
-            return response()->json(['user' => $user], 200);
-
-        } catch (\Exception $e) {
-
-            return response()->json(['message' => 'user not found!'], 404);
+            $user = User::relations($this->relations($request))->findOrFail($id);
+            return $this->respondOk($user);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondError('Utilisateur non trouvé.', 404);
         }
-
     }
-
 }
