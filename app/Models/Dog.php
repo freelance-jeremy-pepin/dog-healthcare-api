@@ -40,7 +40,10 @@ class Dog extends BaseModel
      *
      * @var string[]
      */
-    protected $relations = ['user'];
+    protected $relations = [
+        'user',
+        'weights'
+    ];
 
     /**
      * @return HasOne
@@ -48,5 +51,10 @@ class Dog extends BaseModel
     public function user()
     {
         return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+
+    public function weights()
+    {
+        return $this->hasMany('App\Models\Weight', 'dog_id', 'id');
     }
 }

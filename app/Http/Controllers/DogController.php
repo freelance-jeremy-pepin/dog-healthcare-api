@@ -24,7 +24,7 @@ class DogController extends Controller
     private $query;
 
     /**
-     * UserController constructor.
+     * DogController constructor.
      * @param Request $request
      */
     public function __construct(Request $request)
