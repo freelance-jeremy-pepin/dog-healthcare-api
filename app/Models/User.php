@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -58,7 +59,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      *
      * @var string[]
      */
-    protected $relations = ['activeDog'];
+    protected $relations = [
+        'activeDog',
+        'dogs'
+    ];
 
     /**
      * @return BelongsTo
@@ -66,6 +70,14 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function activeDog()
     {
         return $this->belongsTo('App\Models\Dog', 'active_dog_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function dogs()
+    {
+        return $this->hasMany('App\Models\Dog', 'user_id', 'id');
     }
 
     /**

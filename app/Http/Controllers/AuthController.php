@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Request\AuthValidation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -22,12 +23,7 @@ class AuthController extends Controller
         //validate incoming request
         $this->validate(
             $request,
-            [
-                'firstname' => 'required|string',
-                'lastname' => 'required|string',
-                'email' => 'required|email|unique:user',
-                'password' => 'required|confirmed',
-            ]
+            AuthValidation::rules()
         );
 
         try {
@@ -37,7 +33,6 @@ class AuthController extends Controller
             $user->email = $request->input('email');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
-
 
             $user->save();
 

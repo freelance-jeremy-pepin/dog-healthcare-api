@@ -55,25 +55,13 @@ class Handler extends ExceptionHandler
     {
         $rendered = parent::render($request, $exception);
 
-        return self::errorJson($exception->getMessage(), $rendered->getStatusCode());
-    }
-
-    /**
-     * Formate une erreur pour la renvoyer au format JSON.
-     * @param string $message
-     * @param int $code
-     * @return JsonResponse
-     */
-    public static function errorJson(string $message, int $code)
-    {
         return response()->json(
             [
                 'error' => [
-                    'code' => $code,
-                    'message' => $message,
+                    'code' => $rendered->getStatusCode(),
+                    'message' => $exception->getMessage(),
                 ]
             ],
-            $code
         );
     }
 }

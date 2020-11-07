@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property integer $id
@@ -41,13 +40,13 @@ class Dog extends BaseModel
      *
      * @var string[]
      */
-    protected $relations = ['users'];
+    protected $relations = ['user'];
 
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function users()
+    public function user()
     {
-        return $this->hasMany('App\Models\User', 'active_dog_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 }

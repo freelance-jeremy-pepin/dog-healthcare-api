@@ -1,6 +1,5 @@
 <?php
 
-/** @var Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -16,53 +15,72 @@
 // API route group
 use Laravel\Lumen\Routing\Router;
 
-// Protected routes
-$router->group(
-    [
-        'prefix' => 'api',
-        // 'middleware' => 'auth' // TODO:
-    ],
-    function () use ($router) {
 
-        // User
-        $router->group(
-            ['prefix' => 'user'],
-            function () use ($router) {
-                // Matches "/api/user/me
-                $router->get('me', 'UserController@getMe');
+$api = app('Dingo\Api\Routing\Router');
 
-                // Matches "/api/user/1
-                $router->get('{id}', 'UserController@getById');
+$api->version(
+    'v1',
+    function ($api) {
+        // Protected routes
+        $api->group(
+            [
+                'prefix' => 'api',
+                // 'middleware' => 'auth' // TODO:
+            ],
+            function () use ($api) {
 
-                // Matches "/api/user
-                $router->get('', 'UserController@getAll');
+                // User
+                $api->group(
+                    ['prefix' => 'user'],
+                    function () use ($api) {
+                        // Matches "/api/user/me
+                        $api->get('me', 'App\Http\Controllers\UserController@getMe');
+
+                        // Matches "/api/user/1
+                        $api->get('{id}', 'App\Http\Controllers\UserController@getById');
+
+                        // Matches "/api/user
+                        $api->get('', 'App\Http\Controllers\UserController@getAll');
+                    }
+                );
+
+                // Dog
+                $api->group(
+                    ['prefix' => 'dog'],
+                    function () use ($api) {
+                        // Matches "GET /api/dog/1
+                        $api->get('{id}', 'App\Http\Controllers\DogController@getById');
+
+                        // Matches "GET /api/dog
+                        $api->get('', 'App\Http\Controllers\DogController@getAll');
+
+                        // Matches "POST /api/dog
+                        $api->post('', 'App\Http\Controllers\DogController@create');
+
+                        // Matches "PUT /api/dog/1
+                        $api->put('{id}', 'App\Http\Controllers\DogController@update');
+
+                        // Matches "DELETE /api/dog/1
+                        $api->delete('{id}', 'App\Http\Controllers\DogController@delete');
+                    }
+                );
             }
         );
 
-        // Dog
-        $router->group(
-            ['prefix' => 'dog'],
-            function () use ($router) {
-                // Matches "/api/dog/1
-                $router->get('{id}', 'DogController@getById');
+        // Unprotected routes
+        $api->group(
+            [
+                'prefix' => 'api',
+            ],
+            function () use ($api) {
+                // Matches "/api/register
+                $api->post('register', 'App\Http\Controllers\AuthController@register');
 
-                // Matches "/api/dog
-                $router->get('', 'DogController@getAll');
+                // Matches "/api/login
+                $api->post('login', 'App\Http\Controllers\AuthController@login');
             }
         );
+
     }
 );
 
-// Unprotected routes
-$router->group(
-    [
-        'prefix' => 'api',
-    ],
-    function () use ($router) {
-        // Matches "/api/register
-        $router->post('register', 'AuthController@register');
-
-        // Matches "/api/login
-        $router->post('login', 'AuthController@login');
-    }
-);

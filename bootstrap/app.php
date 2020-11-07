@@ -99,6 +99,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class);
 $app->register(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
