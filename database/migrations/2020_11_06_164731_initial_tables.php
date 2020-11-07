@@ -30,7 +30,7 @@ class InitialTables extends Migration
             'dog',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('user_id');
+                $table->foreignId('user_id')->constrained('user');
                 $table->string('name', 100)->nullable(false);
                 $table->string('breed', 255)->nullable(false);
                 $table->date('birthday')->nullable(false);
@@ -60,8 +60,8 @@ class InitialTables extends Migration
             'professional',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('professional_type_id');
-                $table->foreignId('user_id');
+                $table->foreignId('professional_type_id')->constrained('professional_type');
+                $table->foreignId('user_id')->constrained('user');
                 $table->string('name', 255)->nullable(false);
                 $table->string('phone_number', 15)->nullable();
                 $table->string('mobile_number', 15)->nullable();
@@ -78,7 +78,7 @@ class InitialTables extends Migration
             'weight',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('dog_id');
+                $table->foreignId('dog_id')->constrained('dog');
                 $table->date('date')->nullable(false);
                 $table->decimal('weight', 4, 2)->nullable(false);
                 $table->timestamps();
@@ -89,7 +89,7 @@ class InitialTables extends Migration
             'anti_parasitic',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('dog_id');
+                $table->foreignId('dog_id')->constrained('dog');
                 $table->foreignId('cared_by_professional_id')->constrained('professional');
                 $table->date('date');
                 $table->string('anti_parasitic_name', 255)->nullable(false);
@@ -103,7 +103,7 @@ class InitialTables extends Migration
             'deworming',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('dog_id');
+                $table->foreignId('dog_id')->constrained('dog');;
                 $table->foreignId('cared_by_professional_id')->constrained('professional');
                 $table->date('date');
                 $table->string('deworming_name', 255)->nullable(false);
@@ -128,8 +128,8 @@ class InitialTables extends Migration
             'reminder',
             function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('time_interval_id');
-                $table->foreignId('dog_id');
+                $table->foreignId('time_interval_id')->constrained('time_interval');;
+                $table->foreignId('dog_id')->constrained('dog');;
                 $table->integer('number_time_interval')->nullable(false);
                 $table->string('table_name', 255)->nullable(false);
                 $table->date('next_reminder')->nullable(false);
