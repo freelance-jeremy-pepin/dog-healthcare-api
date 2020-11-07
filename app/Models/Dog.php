@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $updated_at
  * @property User[] $users
  */
-class Dog extends Model
+class Dog extends BaseModel
 {
     /**
      * The table associated with the model.
@@ -37,10 +37,17 @@ class Dog extends Model
     ];
 
     /**
+     * Relations du modèle.
+     *
+     * @var string[]
+     */
+    protected $relations = ['users'];
+
+    /**
      * @return HasMany
      */
     public function users()
     {
-        return $this->hasMany('App\User', 'active_dog_id');
+        return $this->hasMany('App\Models\User', 'active_dog_id');
     }
 }

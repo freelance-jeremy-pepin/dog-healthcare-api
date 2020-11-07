@@ -12,6 +12,18 @@
 
 namespace App\Models{
 /**
+ * App\Models\BaseModel
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel query()
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel relations($relations)
+ */
+	class BaseModel extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Dog
  *
  * @property integer $id
@@ -55,8 +67,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User relations($relations)
- * @method static \Illuminate\Database\Eloquent\Builder|User testbis($relations)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel relations($relations)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereActiveDogId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)

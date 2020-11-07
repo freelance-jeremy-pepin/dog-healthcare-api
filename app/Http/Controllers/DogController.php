@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class DogController extends Controller
 {
     /**
      * @var Request
@@ -17,7 +16,7 @@ class UserController extends Controller
     private $request;
 
     /**
-     * @var User|Builder
+     * @var Dog|Builder
      */
     private $query;
 
@@ -28,23 +27,11 @@ class UserController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->query = User::relations($this->relations($request));
+        $this->query = Dog::relations($this->relations($request));
     }
 
     /**
-     * Récupère l'utilisateur connecté.
-     *
-     * @return JsonResponse
-     */
-    public function getMe(): JsonResponse
-    {
-        return $this->respondOk(
-            $this->query->findOrFail(Auth::id())
-        );
-    }
-
-    /**
-     * Récupère tous les utilisateurs.
+     * Récupère tous les chiens.
      *
      * @return JsonResponse
      */
@@ -56,9 +43,9 @@ class UserController extends Controller
     }
 
     /**
-     * Récupère un utilisateur par son ID.
+     * Récupère un chien par son ID.
      *
-     * @param $id integer Id de l'utilisateur.
+     * @param $id integer Id du chien.
      * @return JsonResponse
      */
     public function getById(int $id): JsonResponse
@@ -68,7 +55,7 @@ class UserController extends Controller
                 $this->query->findOrFail($id)
             );
         } catch (ModelNotFoundException $e) {
-            return $this->respondError('Utilisateur non trouvé.', 404);
+            return $this->respondError('Chien non trouvé.', 404);
         }
     }
 }

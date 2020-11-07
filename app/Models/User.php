@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Dog;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property integer $id
@@ -24,7 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $updated_at
  * @property Dog $dog
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable, HasFactory;
 
@@ -57,18 +54,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
+     * Relations du modèle.
+     *
+     * @var string[]
+     */
+    protected $relations = ['activeDog'];
+
+    /**
      * @return BelongsTo
      */
     public function activeDog()
     {
         return $this->belongsTo('App\Models\Dog', 'active_dog_id');
-    }
-
-    public function scopeRelations(Builder $query, array $relations)
-    {
-        if (in_array('activeDog', $relations, true)) {
-            $query->with('activeDog');
-        }
     }
 
     /**

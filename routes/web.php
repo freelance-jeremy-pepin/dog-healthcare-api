@@ -38,6 +38,18 @@ $router->group(
                 $router->get('', 'UserController@getAll');
             }
         );
+
+        // Dog
+        $router->group(
+            ['prefix' => 'dog'],
+            function () use ($router) {
+                // Matches "/api/dog/1
+                $router->get('{id}', 'DogController@getById');
+
+                // Matches "/api/dog
+                $router->get('', 'DogController@getAll');
+            }
+        );
     }
 );
 
