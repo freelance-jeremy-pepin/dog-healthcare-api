@@ -34,10 +34,10 @@ class ProfessionalController extends Controller
     }
 
     /**
-     * Créer un nouveau poids.
-     * @return int Id du nouveau poids.
+     * Créer un nouveau professionnel.
+     * @return JsonResponse Nouveau professionnel.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, ProfessionalValidation::rules());
 
@@ -45,11 +45,11 @@ class ProfessionalController extends Controller
         $professional->user_id = Auth::id();
         $professional->save();
 
-        return $professional->id;
+        return $this->respondOk($this->getProfessional($professional->id));
     }
 
     /**
-     * Récupère tous les poids.
+     * Récupère tous les professionnels.
      * @return JsonResponse
      */
     public function getAll(): JsonResponse
@@ -60,8 +60,8 @@ class ProfessionalController extends Controller
     }
 
     /**
-     * Récupère un poids par son ID.
-     * @param $id integer Id du poids.
+     * Récupère un professionnel par son ID.
+     * @param $id integer Id du professionnel.
      * @return JsonResponse
      */
     public function getById(int $id): JsonResponse
@@ -72,20 +72,21 @@ class ProfessionalController extends Controller
     }
 
     /**
-     * Met à jour un poids.
+     * Met à jour un professionnel.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $professional = $this->getProfessional($id);
 
         $professional->update($this->request->all());
+
+        return $this->respondOk($this->getProfessional($id));
     }
 
     /**
-     * Supprime un poids.
+     * Supprime un professionnel.
      * @param int $id
      * @return void
      * @throws HttpException
@@ -108,7 +109,7 @@ class ProfessionalController extends Controller
         $professional = $this->query->where('user_id', Auth::id())->find($id);
 
         if ($professional === null) {
-            abort(404, 'Ce poids n\'existe pas.');
+            abort(404, 'Ce professionnel n\'existe pas.');
         }
 
         return $professional;

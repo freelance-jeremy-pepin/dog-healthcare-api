@@ -49,7 +49,7 @@ class Reminder extends BaseModel
      *
      * @var string[]
      */
-    protected $relations = ['user'];
+    protected $relations = ['user', 'timeInterval'];
 
     /**
      * @return BelongsTo

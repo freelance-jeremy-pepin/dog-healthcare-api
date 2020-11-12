@@ -35,9 +35,9 @@ class ReminderController extends Controller
 
     /**
      * Créer un nouveau rappel.
-     * @return int Id du nouveau rappel.
+     * @return JsonResponse Id du nouveau rappel.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, ReminderValidation::rules());
 
@@ -45,7 +45,7 @@ class ReminderController extends Controller
         $reminder->user_id = Auth::id();
         $reminder->save();
 
-        return $reminder->id;
+        return $this->respondOk($this->getReminder($reminder->id));
     }
 
     /**
@@ -57,6 +57,18 @@ class ReminderController extends Controller
         $reminders = $this->query->where('user_id', Auth::id())->get();
 
         return $this->respondOk($reminders);
+    }
+
+    /**
+     * Récupère tous les rappels d'un chien.
+     * @param int $dogId
+     * @return JsonResponse
+     */
+    public function getAllByDog(int $dogId): JsonResponse
+    {
+        $dewormings = $this->query->where('dog_id', $dogId)->get();
+
+        return $this->respondOk($dewormings);
     }
 
     /**
@@ -74,14 +86,15 @@ class ReminderController extends Controller
     /**
      * Met à jour un rappel.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Rappel modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $reminder = $this->getReminder($id);
 
         $reminder->update($this->request->all());
+
+        return $this->respondOk($this->getReminder($id));
     }
 
     /**
@@ -105,7 +118,7 @@ class ReminderController extends Controller
      */
     private function getReminder(int $id): Reminder
     {
-        $reminder = $this->query->where('user_id', Auth::id())->find($id);
+        $reminder = $this->query->find($id);
 
         if ($reminder === null) {
             abort(404, 'Ce rappel n\'existe pas.');

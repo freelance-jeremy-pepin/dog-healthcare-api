@@ -34,16 +34,16 @@ class ProfessionalTypeController extends Controller
 
     /**
      * Créer un nouveau type de professionnel.
-     * @return int Id du nouveau poids
+     * @return JsonResponse Nouveau poids.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, ProfessionalTypeValidation::rules());
 
         $professionalType = new ProfessionalType($this->request->all());
         $professionalType->save();
 
-        return $professionalType->id;
+        return $this->respondOk($this->getProfessionalType($professionalType->id));
     }
 
     /**
@@ -72,14 +72,15 @@ class ProfessionalTypeController extends Controller
     /**
      * Met à jour un type de professionnel.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Type de professionnel modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $professionalType = $this->getProfessionalType($id);
 
         $professionalType->update($this->request->all());
+
+        return $this->respondOk($this->getProfessionalType($id));
     }
 
     /**

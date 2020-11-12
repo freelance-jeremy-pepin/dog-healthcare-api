@@ -34,16 +34,16 @@ class DewormingController extends Controller
 
     /**
      * Créer un nouveau vermifuge.
-     * @return int Id du nouveau vermifuge.
+     * @return JsonResponse Nouveau vermifuge.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, DewormingValidation::rules());
 
         $deworming = new Deworming($this->request->all());
         $deworming->save();
 
-        return $deworming->id;
+        return $this->respondOk($this->getDeworming($deworming->id));
     }
 
     /**
@@ -53,6 +53,18 @@ class DewormingController extends Controller
     public function getAll(): JsonResponse
     {
         $dewormings = $this->query->get();
+
+        return $this->respondOk($dewormings);
+    }
+
+    /**
+     * Récupère tous les vermifuges d'un chien.
+     * @param int $dogId
+     * @return JsonResponse
+     */
+    public function getAllByDog(int $dogId): JsonResponse
+    {
+        $dewormings = $this->query->where('dog_id', $dogId)->orderBy('date')->get();
 
         return $this->respondOk($dewormings);
     }
@@ -70,23 +82,35 @@ class DewormingController extends Controller
     }
 
     /**
+     * Récupère le dernier vermifuge d'un chien.
+     * @param $dogId integer Id du chien.
+     * @return JsonResponse
+     */
+    public function getLastByDog(int $dogId): JsonResponse
+    {
+        $deworming = $this->query->orderBy('date', 'desc')->where('dog_id', $dogId)->first();
+
+        return $this->respondOk($deworming);
+    }
+
+    /**
      * Met à jour un vermifuge.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Vermifuge modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $deworming = $this->getDeworming($id);
 
         $deworming->update($this->request->all());
+
+        return $this->respondOk($this->getDeworming($id));
     }
 
     /**
      * Supprime un vermifuge.
      * @param int $id
      * @return void
-     * @throws HttpException
      * @throws Exception
      */
     public function delete(int $id): void

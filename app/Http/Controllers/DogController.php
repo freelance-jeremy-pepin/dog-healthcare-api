@@ -35,9 +35,9 @@ class DogController extends Controller
 
     /**
      * Créer un nouveau chien.
-     * @return int Id du nouveau chien
+     * @return JsonResponse Nouveau chien.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, DogValidation::rules());
 
@@ -45,7 +45,7 @@ class DogController extends Controller
         $dog->user_id = Auth::id();
         $dog->save();
 
-        return $dog->id;
+        return $this->respondOk($this->getDog($dog->id));
     }
 
     /**
@@ -74,14 +74,15 @@ class DogController extends Controller
     /**
      * Met à jour un chien.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Chien modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $dog = $this->getDog($id);
 
         $dog->update($this->request->all());
+
+        return $this->respondOk($this->getDog($dog->$id));
     }
 
     /**

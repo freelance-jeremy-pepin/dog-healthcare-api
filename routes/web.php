@@ -25,7 +25,7 @@ $api->version(
         $api->group(
             [
                 'prefix' => 'api',
-                // 'middleware' => 'auth' // TODO:
+                'middleware' => 'auth'
             ],
             function () use ($api) {
 
@@ -41,6 +41,9 @@ $api->version(
 
                         // Matches "/api/user
                         $api->get('', 'App\Http\Controllers\UserController@getAll');
+
+                        // Matches "PUT /api/user
+                        $api->put('', 'App\Http\Controllers\UserController@update');
                     }
                 );
 
@@ -53,6 +56,12 @@ $api->version(
 
                         // Matches "GET /api/anti-parasitic
                         $api->get('', 'App\Http\Controllers\AntiParasiticController@getAll');
+
+                        // Matches "GET /api/anti-parasitic/dog/1
+                        $api->get('dog/{dogId}', 'App\Http\Controllers\AntiParasiticController@getAllByDog');
+
+                        // Matches "GET /api/anti-parasitic/last/dog/1
+                        $api->get('last/dog/{dogId}', 'App\Http\Controllers\AntiParasiticController@getLastByDog');
 
                         // Matches "POST /api/anti-parasitic
                         $api->post('', 'App\Http\Controllers\AntiParasiticController@create');
@@ -74,6 +83,12 @@ $api->version(
 
                         // Matches "GET /api/deworming
                         $api->get('', 'App\Http\Controllers\DewormingController@getAll');
+
+                        // Matches "GET /api/deworming/dog/1
+                        $api->get('dog/{dogId}', 'App\Http\Controllers\DewormingController@getAllByDog');
+
+                        // Matches "GET /api/deworming/last/dog/1
+                        $api->get('last/dog/{dogId}', 'App\Http\Controllers\DewormingController@getLastByDog');
 
                         // Matches "POST /api/deworming
                         $api->post('', 'App\Http\Controllers\DewormingController@create');
@@ -159,6 +174,9 @@ $api->version(
                         // Matches "GET /api/reminder
                         $api->get('', 'App\Http\Controllers\ReminderController@getAll');
 
+                        // Matches "GET /api/reminder/dog/1
+                        $api->get('dog/{dogId}', 'App\Http\Controllers\ReminderController@getAllByDog');
+
                         // Matches "POST /api/reminder
                         $api->post('', 'App\Http\Controllers\ReminderController@create');
 
@@ -180,6 +198,9 @@ $api->version(
                         // Matches "GET /api/weight
                         $api->get('', 'App\Http\Controllers\WeightController@getAll');
 
+                        // Matches "GET /api/weight/dog/1
+                        $api->get('dog/{dogId}', 'App\Http\Controllers\WeightController@getAllByDog');
+
                         // Matches "POST /api/weight
                         $api->post('', 'App\Http\Controllers\WeightController@create');
 
@@ -188,6 +209,18 @@ $api->version(
 
                         // Matches "DELETE /api/weight/1
                         $api->delete('{id}', 'App\Http\Controllers\WeightController@delete');
+                    }
+                );
+
+                // TimeInterval
+                $api->group(
+                    ['prefix' => 'time-interval'],
+                    function () use ($api) {
+                        // Matches "GET /api/time-interval/1
+                        $api->get('{id}', 'App\Http\Controllers\TimeIntervalController@getById');
+
+                        // Matches "GET /api/time-interval
+                        $api->get('', 'App\Http\Controllers\TimeIntervalController@getAll');
                     }
                 );
             }

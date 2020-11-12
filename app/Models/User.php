@@ -39,7 +39,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'active_dog',
+        'active_dog_id',
         'email',
         'firstname',
         'lastname'

@@ -71,4 +71,30 @@ class UserController extends Controller
             return $this->respondError('Utilisateur non trouvé.', 404);
         }
     }
+
+        /**
+     * Met à jour l'utilisateur courant.
+     * @return void
+     */
+    public function update(): void
+    {
+        $deworming = $this->getUser(Auth::id());
+
+        $deworming->update($this->request->all());
+    }
+
+        /**
+     * @param int $id
+     * @return User
+     */
+    private function getUser(int $id): User
+    {
+        $user = $this->query->find($id);
+
+        if ($user === null) {
+            abort(404, 'Cet utilisateur n\'existe pas.');
+        }
+
+        return $user;
+    }
 }

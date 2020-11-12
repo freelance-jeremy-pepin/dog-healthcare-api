@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use PHPUnit\Util\Json;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AntiParasiticController extends Controller
@@ -34,16 +35,16 @@ class AntiParasiticController extends Controller
 
     /**
      * Créer un nouveau anti-parasitaire.
-     * @return int Id du nouveau anti-parasitaire.
+     * @return JsonResponse Nouveau anti-parasitaire.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, AntiParasiticValidation::rules());
 
         $antiParasitic = new AntiParasitic($this->request->all());
         $antiParasitic->save();
 
-        return $antiParasitic->id;
+        return $this->respondOk($this->getAntiParasitic($antiParasitic->id));
     }
 
     /**
@@ -55,6 +56,18 @@ class AntiParasiticController extends Controller
         $antiParasitics = $this->query->get();
 
         return $this->respondOk($antiParasitics);
+    }
+
+    /**
+     * Récupère tous les anti-parasitaires d'un chien.
+     * @param int $dogId
+     * @return JsonResponse
+     */
+    public function getAllByDog(int $dogId): JsonResponse
+    {
+        $dewormings = $this->query->where('dog_id', $dogId)->get();
+
+        return $this->respondOk($dewormings);
     }
 
     /**
@@ -70,16 +83,29 @@ class AntiParasiticController extends Controller
     }
 
     /**
+     * Récupère le dernier anti-parasitaire d'un chien.
+     * @param $dogId integer Id du chien.
+     * @return JsonResponse
+     */
+    public function getLastByDog(int $dogId): JsonResponse
+    {
+        $antiParasitic = $this->query->orderBy('date', 'desc')->where('dog_id', $dogId)->first();
+
+        return $this->respondOk($antiParasitic);
+    }
+
+    /**
      * Met à jour un anti-parasitaire.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Anti-parasitaire modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $antiParasitic = $this->getAntiParasitic($id);
 
         $antiParasitic->update($this->request->all());
+
+        return $this->respondOk($this->getAntiParasitic($id));
     }
 
     /**

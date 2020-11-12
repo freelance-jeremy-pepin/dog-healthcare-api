@@ -13,7 +13,19 @@ class CaredByProfessionalIdNullable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table(
+            'anti_parasitic',
+            function (Blueprint $table) {
+                $table->unsignedBigInteger('cared_by_professional_id')->nullable(true)->change();
+            }
+        );
+
+        Schema::table(
+            'deworming',
+            function (Blueprint $table) {
+                $table->unsignedBigInteger('cared_by_professional_id')->nullable(true)->change();
+            }
+        );
     }
 
     /**
@@ -23,6 +35,18 @@ class CaredByProfessionalIdNullable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table(
+            'anti_parasitic',
+            function (Blueprint $table) {
+                $table->unsignedBigInteger('cared_by_professional_id')->nullable(false)->change();
+            }
+        );
+
+        Schema::table(
+            'deworming',
+            function (Blueprint $table) {
+                $table->unsignedBigInteger('cared_by_professional_id')->nullable(false)->change();
+            }
+        );
     }
 }

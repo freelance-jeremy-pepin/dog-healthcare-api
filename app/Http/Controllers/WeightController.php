@@ -34,16 +34,16 @@ class WeightController extends Controller
 
     /**
      * Créer un nouveau poids.
-     * @return int Id du nouveau poids.
+     * @return JsonResponse Nouveau poids.
      */
-    public function create(): int
+    public function create(): JsonResponse
     {
         $this->validate($this->request, WeightValidation::rules());
 
         $weight = new Weight($this->request->all());
         $weight->save();
 
-        return $weight->id;
+        return $this->respondOk($this->getWeight($weight->id));
     }
 
     /**
@@ -55,6 +55,18 @@ class WeightController extends Controller
         $weights = $this->query->get();
 
         return $this->respondOk($weights);
+    }
+
+    /**
+     * Récupère tous les poids d'un chien.
+     * @param int $dogId
+     * @return JsonResponse
+     */
+    public function getAllByDog(int $dogId): JsonResponse
+    {
+        $dewormings = $this->query->where('dog_id', $dogId)->orderBy('date', 'asc')->get();
+
+        return $this->respondOk($dewormings);
     }
 
     /**
@@ -72,14 +84,15 @@ class WeightController extends Controller
     /**
      * Met à jour un poids.
      * @param int $id
-     * @return void
-     * @throws HttpException
+     * @return JsonResponse Poids modifié.
      */
-    public function update(int $id): void
+    public function update(int $id): JsonResponse
     {
         $weight = $this->getWeight($id);
 
         $weight->update($this->request->all());
+
+        return $this->respondOk($this->getWeight($id));
     }
 
     /**

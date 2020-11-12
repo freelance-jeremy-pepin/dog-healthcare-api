@@ -44,7 +44,7 @@ class TimeInterval extends BaseModel
      *
      * @var string[]
      */
-    protected $relations = ['user'];
+    protected $relations = ['reminders'];
 
     /**
      * @return HasMany
