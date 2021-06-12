@@ -13,7 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call('Database\Seeders\UserSeed');
         $this->call('Database\Seeders\TimeIntervalSeed');
         $this->call('Database\Seeders\ProfessionalTypeSeed');
+        $this->call('Database\Seeders\DogSeed');
     }
 }

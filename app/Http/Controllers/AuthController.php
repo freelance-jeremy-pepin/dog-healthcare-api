@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Request\AuthValidation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -16,7 +15,6 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function register(Request $request)
     {
@@ -46,7 +44,6 @@ class AuthController extends Controller
             );
 
         } catch (\Exception $e) {
-            //return error message
             return response()->json(['message' => 'User Registration Failed!'], 409);
         }
 
@@ -57,9 +54,8 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
-     * @throws ValidationException
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         //validate incoming request
         $this->validate(

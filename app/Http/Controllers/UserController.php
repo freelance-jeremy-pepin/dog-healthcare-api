@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -72,7 +72,7 @@ class UserController extends Controller
         }
     }
 
-        /**
+    /**
      * Met à jour l'utilisateur courant.
      * @return void
      */
@@ -83,7 +83,7 @@ class UserController extends Controller
         $deworming->update($this->request->all());
     }
 
-        /**
+    /**
      * @param int $id
      * @return User
      */

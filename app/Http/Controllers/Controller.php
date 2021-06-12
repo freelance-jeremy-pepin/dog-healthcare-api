@@ -52,7 +52,7 @@ class Controller extends BaseController
 
     protected function respondOk($data)
     {
-        return response()->json($data, 200);
+        return response()->json($data);
     }
 
     protected function relations(Request $request)
